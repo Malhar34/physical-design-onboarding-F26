@@ -8,6 +8,7 @@ create_library_set \
 	 -name typical_libs \
 	 -timing [ list \
 			 "$::config::RESOURCES/cadence_sky130/sky130_scl_9T_0.1.2/sky130_scl_9T/lib/sky130_tt_1.8_25_nldm.lib" \
+			 "$::config::RESOURCES/cadence_sky130/sky130_scl_9T_0.1.2/sky130_scl_9T_HS/lib/sky130_tt_1.8_25_nldm.lib" \
 	     	 "$::config::RESOURCES/cadence_sky130/sky130_scl_9T_0.1.2/sky130_scl_9T_tech/lib/sky130_scl_9T_phyCells.lib" \
 			 "$::config::INPUTS/CF_SRAM_1024x32/lib/CF_SRAM_1024x32_tt_180V_100C.lib" \
 

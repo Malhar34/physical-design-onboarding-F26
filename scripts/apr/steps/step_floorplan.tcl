@@ -1,11 +1,10 @@
 # ===== Floorplan ===== #
 
 ## Chip Dimension
-### TODO adjust to more appropriate values
 ### heads up: these variables aren't magic!
 ### make sure you pass them to the appropriate command.
-set x_dim 10000
-set y_dim 10000
+set x_dim 995.494
+set y_dim 497.747
 
 ## Core Offsets
 ### Sets an offset on where standard cells can be placed.
@@ -20,9 +19,8 @@ set bottom_offset   9.6
 #floorPlan -site CoreSite \
 # -s $x_dim $y_dim \ 
 # $left_offset $right_offset $bottom_offset $top_offset
-## TODO is this using the right variables?
 floorPlan -site CoreSite -adjustToSite \
-	-s 10000 10000 \
+	-s $x_dim $y_dim \
 	$left_offset $bottom_offset $right_offset $top_offset
 
 # Set Design Mode
@@ -30,18 +28,17 @@ setDesignMode -process 130 -topRoutingLayer 5
 
 ### ===== Place Blocks ===== #
 # Edit halo around every block
-## TODO are the values for these macro names right?
 ## reference chip_top.sv
-set macro_name_1 data_sram
-set macro_name_2 memory_sram
+set macro_name_1 instruction_memory/u_sram
+set macro_name_2 data_memory/u_sram
 
-## TODO place blocks in an appropriate location (not 0,0!)
-placeInstance $macro_name_1 0 0 -fixed
-placeInstance $macro_name_2 0 0 -fixed
+
+placeInstance $macro_name_1 109.877 95.486 -fixed
+placeInstance $macro_name_2 497.747 95.486 -fixed
 
 # add block halos
-addHaloToBlock {21 21 21 21} macro_name_1
-addHaloToBlock {21 21 21 21} macro_name_2
+addHaloToBlock {21 21 21 21} $macro_name_1
+addHaloToBlock {21 21 21 21} $macro_name_2
 
 # ===== Power Plan ===== #
 # ===== Define Global Nets ===== # 
@@ -118,12 +115,23 @@ addRing \
 
 # ===== Block Power Ring=====  #
 
-## TODO refer to part 2.3b
+createInstGroup group_SRAMs
+addInstToInstGroup group_SRAMs $macro_name_1
+addInstToInstGroup group_SRAMs $macro_name_2
+selectObjByProp Instance group=group_SRAMs
 
-## TODO part 2.3c
+
 addRing \
 	-around cluster \
-## ^^ more flags here
+	-type block_rings \
+	-jog_distance 0.4 \
+	-nets {VDD VSS} \
+	-layer {bottom met5 top met5 right met4 left met4} \
+	-width 6.2 \
+	-spacing 3.2 \
+	-offset 5
+
+
 
 
 ## deselect macro groups

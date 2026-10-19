@@ -183,3 +183,13 @@ proc sj_run_remaining {} {
 		}
 	}
 }
+
+# return the total NEgative Slack of the design (TNS). That is the sum of the negative slack across every violating endpoint (worst path per endpoint). This makes sure I dont double count.
+proc get_tns {} {
+	set paths [report_timing -collection -max_paths 100000 -nworst 1 -max_slack 0]
+	set tns 0.0
+	foreach_in_collection p $paths {
+		set tns [expr {$tns + [get_db $p .slack]}]
+	}
+	return $tns
+}

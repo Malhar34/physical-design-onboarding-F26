@@ -23,5 +23,5 @@ congRepair
 # Check Placements
 checkPlace $::config::RPT_DIR/$::config::DESIGN.checkPlace
 
-# TODO 2.3b
 # report utilization
+checkPlace util.txt

@@ -72,8 +72,22 @@ set search_path ""
 set search_path "${::LIB_PATH}/symbols/synopsys $search_path" ; ## mysterious and confusing
 set search_path "${::LIB_PATH}/synopsys $search_path" ; ## as above
 
-set ::target_library $::LIB_TT_DB
-set ::link_library   "$::LIB_TT_DB $::LIB_SS_DB $::LIB_FF_DB"
+
+
+# High speed case libraries for cell swapping
+set ::LIB_HS_FF_NAME "HS_sky130_ff_1.98_0"
+set ::LIB_HS_FF_DB "$::LIB_DBS_PATH/$::LIB_HS_FF_NAME.db"
+
+set ::LIB_HS_TT_NAME "HS_sky130_tt_1.8_25"
+set ::LIB_HS_TT_DB "$::LIB_DBS_PATH/$::LIB_HS_TT_NAME.db"
+
+set ::LIB_HS_SS_NAME "HS_sky130_ss_1.62_125"
+set ::LIB_HS_SS_DB "$::LIB_DBS_PATH/$::LIB_HS_SS_NAME.db"
+
+set ::target_library "$::LIB_TT_DB $::LIB_HS_TT_DB"
+set ::link_library   "$::LIB_TT_DB $::LIB_SS_DB $::LIB_FF_DB $::LIB_HS_TT_DB $::LIB_HS_SS_DB $::LIB_HS_FF_DB"
+
+
 
 # silence clock gating warnings by avoiding these cells
 # TODO: revist if DFT is enabled
